@@ -10,12 +10,13 @@ static void factory(JudgeControl * a)
 
 
 //judge
-Judge::Judge(std::string sourcepath, int index)
+Judge::Judge(std::string sourcepath)
 {
     //0
     sourcefix=sourcepath+"/";
+
     //1
-	std::string task = "task" + std::to_string(index)+"/";
+	std::string task = "task/";
 	tempprefix = "./temp/" + task;
 	answerfix = "./answer/" + task;
 	finished = false;
@@ -59,6 +60,7 @@ void Judge::start_factories()
     //1
     for(int i=0;i<fordernames.size();i++)
     {
+
         std::string tempfile=tempprefix+fordernames[i];
         std::string answerfile=answerfix+fordernames[i];
         std::string sourcefile=sourcefix+fordernames[i];
@@ -115,9 +117,7 @@ void Judge::save_results()
     for(int i=0;i<fordernames.size();i++)
     {
         std::string path1=answerfix+fordernames[i]+"/equal.csv";
-        std::cout<<path1<<std::endl;
         std::string path2=answerfix+fordernames[i]+"/inequal.csv";
-         std::cout<<path2<<std::endl;
         std::fstream file1(path1,std::ios::in);
         std::fstream file2(path2,std::ios::in);
 
@@ -134,4 +134,20 @@ void Judge::save_results()
     }
     equal.close();
     inequal.close();
+
+
+    
+    clear_temp_file();
+    finished=true;
+}
+
+void Judge::clear_temp_file()
+{
+    std::string command1="rm -rf "+tempprefix;
+    std::string command2="rm -rf "+answerfix;
+    system(command1.c_str());
+    system(command2.c_str());
+    int isCreate1 = mkdir(tempprefix.c_str(),S_IRWXU);
+    int isCreate2 = mkdir(answerfix.c_str(),S_IRWXU);
+
 }

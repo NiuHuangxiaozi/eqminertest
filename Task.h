@@ -21,15 +21,16 @@ private:
     std::string sourcefix;
 	bool finished;
 
+	void create_environment();//make dir
+	void clear_temp_file();
+
 public:
-	Judge(std::string sourcepath, int index);
+	Judge(std::string sourcepath);
     ~Judge();
 
 	bool is_finished() {
 		return finished = true;
 	}
-	void create_environment();
-
 	void start_factories();
 
 	void save_results();
