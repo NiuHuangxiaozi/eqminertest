@@ -36,23 +36,7 @@ Judge::Judge(std::string sourcepath, int index)
 	closedir(pDir);
 
     //3
-    for(int i=0;i<fordernames.size();i++)
-    {
-        std::string path1=tempprefix+fordernames[i];
-        std::string path2=answerfix+fordernames[i];
-        int isCreate1 = mkdir(path1.c_str(),S_IRWXU);
-        int isCreate2 = mkdir(path2.c_str(),S_IRWXU);
-        /*
-        if( !isCreate1 )
-            std::cout<<"create path1: "+path1<<std::endl;
-        else
-            std::cout<<"create path1 failed! error code :"<<isCreate1<<path1<<std::endl;
-        if( !isCreate2 )
-            std::cout<<"create path1: "+path2<<std::endl;
-        else
-            std::cout<<"create path2 failed! error code :"<<isCreate2<<path2<<std::endl;
-        */
-    }
+    create_environment();
 }
 
 
@@ -97,14 +81,57 @@ void Judge::start_factories()
 
 void Judge::create_environment()
 {
-
-
+    //3
+    for(int i=0;i<fordernames.size();i++)
+    {
+        std::string path1=tempprefix+fordernames[i];
+        std::string path2=answerfix+fordernames[i];
+        int isCreate1 = mkdir(path1.c_str(),S_IRWXU);
+        int isCreate2 = mkdir(path2.c_str(),S_IRWXU);
+        /*
+        if( !isCreate1 )
+            std::cout<<"create path1: "+path1<<std::endl;
+        else
+            std::cout<<"create path1 failed! error code :"<<isCreate1<<path1<<std::endl;
+        if( !isCreate2 )
+            std::cout<<"create path1: "+path2<<std::endl;
+        else
+            std::cout<<"create path2 failed! error code :"<<isCreate2<<path2<<std::endl;
+        */
+    }
 }
 
 
 void Judge::save_results()
 {
+    std::fstream equal;
+    equal.open(sourcefix+"equal.csv",std::ios::out|std::ios::trunc);
+    std::fstream inequal;
+    inequal.open(sourcefix+"inequal.csv",std::ios::out|std::ios::trunc);
 
+    equal<<"file1"<<","<<"file2"<<std::endl;
+    inequal<<"file1"<<","<<"file2"<<std::endl;
+    std::string line;
+    for(int i=0;i<fordernames.size();i++)
+    {
+        std::string path1=answerfix+fordernames[i]+"/equal.csv";
+        std::cout<<path1<<std::endl;
+        std::string path2=answerfix+fordernames[i]+"/inequal.csv";
+         std::cout<<path2<<std::endl;
+        std::fstream file1(path1,std::ios::in);
+        std::fstream file2(path2,std::ios::in);
 
-
+        while(file1>>line)
+        {
+            equal<<line<<std::endl;
+        }
+        while (file2>>line)
+        {
+            inequal<<line<<std::endl;
+        }
+        file1.close();
+        file2.close();
+    }
+    equal.close();
+    inequal.close();
 }

@@ -4,7 +4,8 @@
 int main()
 {
 
-	Judge a("./inputfile", 0);
-	//a.start_factories();
+	Judge a("/home/quier/inputfile", 0);
+	a.start_factories();
+	a.save_results();
 	return 0;
 }

@@ -53,21 +53,34 @@ void StackFileTable::init_data(std::string s,std::string answer)
 	}
 }
 
-
+std::string turn_to_erlativepath(std::string s)
+{
+	int times=3;
+	for(int i=s.size()-1;i>=0;i--)
+	{
+		if(s[i]=='/'&& times==1)
+		{
+			return s.substr(i+1,s.size()-i);
+		}
+		else if(s[i]=='/')
+		  times--;
+	}
+	return "";
+}
 void StackFileTable::save_file_result()
 {
 
 	// 向csv文档中写入数据
     std::ofstream dataFile_eq;
 	dataFile_eq.open(answerfile+"/equal.csv", std::ios::out | std::ios::trunc);
-	dataFile_eq<<"file1"<<","<<"file2"<<std::endl;
+	
 	std::ofstream dataFile_uneq;
 	dataFile_uneq.open(answerfile+"/inequal.csv", std::ios::out | std::ios::trunc);
-	dataFile_uneq<<"file1"<<","<<"file2"<<std::endl;
+	
 	while (!outputfile.empty())
 	{
-		std::string url1=outputfile.top().Getpair()[0];
-		std::string url2=outputfile.top().Getpair()[1];
+		std::string url1=turn_to_erlativepath(outputfile.top().Getpair()[0]);
+		std::string url2=turn_to_erlativepath(outputfile.top().Getpair()[1]);
 		bool state=outputfile.top().Get_result();
 		if(state)
 			dataFile_eq <<url1<<","<<url2<<std::endl;
