@@ -9,7 +9,7 @@ void JudgeControl::start_judge()
 	Init_data();
 	//fliter();
 	judge();
-	save_results();
+	//save_results();
 }
 
 
